@@ -1,0 +1,13 @@
+# SiC Power Module Thermal Lifetime Prediction Tool
+# Python package requirements
+
+# Core scientific computing
+numpy>=1.19.0
+pandas>=1.0.0
+scipy>=1.5.0
+
+# Visualization
+matplotlib>=3.2.0
+
+# Progress bars (optional but recommended)
+tqdm>=4.50.0
