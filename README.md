@@ -1,26 +1,21 @@
-# Master Thesis: Lifetime Modeling of SiC Power Modules in Automotive Traction Inverters
+# Lifetime Modeling of SiC Power Modules in Automotive Traction Inverters (Python Implementation)
 
 [![Python Version](https://img.shields.io/badge/python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![AQG 324](https://img.shields.io/badge/Standard-AQG%20324-green.svg)](https://www.ecpe.org)
 
-**Author:** Matteo Totaro  
-**Institution:** ALMA MATER STUDIORUM - UNIVERSITÀ DI BOLOGNA  
-**Industry Partner:** Ferrari S.p.A.  
-**Contact:** tmatteos@gmail.com | [mtotaro.com](https://mtotaro.com)
-
 ---
 
 ## 📋 Overview
 
-This repository contains the comprehensive **Python implementation** and **full thesis documentation** for predicting thermal fatigue lifetime in **Silicon Carbide (SiC) Power MOSFETs** used in high-performance automotive traction inverters.
+This repository contains the comprehensive **Python implementation** for predicting thermal fatigue lifetime in **Silicon Carbide (SiC) Power MOSFETs** used in high-performance automotive traction inverters.
 
 The work successfully combines:
 - ⚡ **Software modeling** (Python tool with MATLAB thesis model)
 - 🔬 **Experimental characterization** methods
 - 📊 **Industry-standard compliance** (ECPE AQG 324)
 
-![Thermal Lifetime Analysis](thermal_lifetime_all_scenarios_comparison.png)
+![Thermal Lifetime Analysis](example_output.png)
 
 ---
 
@@ -30,18 +25,6 @@ The automotive industry's transition to **high-performance Electric Vehicles (EV
 - Smaller, lighter, more powerful components
 - **Silicon Carbide (SiC)** technology for superior performance
 - **Long-term reliability** under extreme operating conditions
-
-### The Challenge
-
-> How do we predict exactly **how fast critical power components will degrade** under real-world driving conditions?
-
-**This thesis provides the answer.**
-
-### Key Innovation
-
-- **Device:** High-power density, **Dual-Side Cooled (DSC)** SiC power module
-- **Technique:** Real-time **Temperature Estimation** ($T_{vj}$) using internal body-diode
-- **Standard:** Strictly compliant with **ECPE AQG 324** automotive qualification
 
 ---
 
@@ -55,9 +38,9 @@ Electric Motor Profile (Speed, Torque, Time)
     [Electro-Thermal Model]
               ↓
 ┌─────────────────────────────────────┐
-│  Coupled Iterative Solution Loop:  │
+│  Coupled Iterative Solution Loop:   │
 │                                     │
-│  T_j(i-1) → P_loss(i) → ΔT → T_j(i)│
+│  T_j(i-1) → P_loss(i) → ΔT → T_j(i) │
 │      ↑                         ↓    │
 │      └─────────────────────────┘    │
 │                                     │
@@ -160,7 +143,7 @@ The tool generates:
 ```
 
 #### 2. Comprehensive Visualization
-A publication-quality comparison plot (`thermal_lifetime_all_scenarios_comparison.png`) showing:
+A publication-quality comparison plot (`example_output.png`) showing:
 - **Row 1:** Motor Speed profiles (all 3 scenarios side-by-side)
 - **Row 2:** Motor Torque profiles (all 3 scenarios)
 - **Row 3:** Junction Temperature evolution (all 3 scenarios)
@@ -229,8 +212,21 @@ Where:
 - **ΔT_j**: Junction temperature swing [K]
 - **T_j_max**: Maximum junction temperature [K]
 - **t_on**: Heating time / power-on duration [s]
+- **K**: Technology-dependent constant calibrated from test data
 
 **Note:** The original Bayerer (CIPS08) model includes a fourth parameter (β₄) for current per bond wire. However, for a fixed module technology and specific application, this parameter becomes a constant absorbed into K. Therefore, this implementation uses the simplified three-parameter form commonly applied in automotive qualification standards.
+
+**Acceleration Factor (without K, comparing field to test conditions):**
+
+The acceleration factor relates field conditions to test conditions:
+
+```
+AF = (ΔT_field / ΔT_test)^β₁ × exp[β₂ × (1/T_max_field - 1/T_max_test)] × (t_on_field / t_on_test)^β₃
+
+N_f_field = N_f_test × AF
+```
+
+This allows prediction of lifetime under actual operating conditions based on standardized qualification test results.
 
 **Miner's Rule (Cumulative Damage):**
 
@@ -240,28 +236,10 @@ D_total = Σ(n_i / N_f_i)
 
 Failure predicted when `D_total ≥ 1.0` (100% life consumed)
 
----
-
-## 📚 Thesis Objectives
-
-### 1. Digital Twin Creation
-Build a **MATLAB/Python model** capable of predicting cumulative damage from any automotive mission profile.
-
-### 2. Test Definition
-Define **AQG 324-compliant testing procedures** for:
-- Power cycling qualification tests
-- Model validation against physical failure data
-
-### 3. Experimental Setup
-Design synchronized test bench using **Source Measurement Unit (SMU)** for:
-- Microsecond-accurate temperature estimation
-- Real-time junction temperature monitoring during stress tests
-
----
 
 ## ⚠️ NOTE ON CONFIDENTIALITY
 
-This work was developed in collaboration with **Ferrari S.p.A.** 
+This work was initially developed on MALTAB in collaboration with **Ferrari S.p.A.** for my Master's Thesis.
 
 Due to intellectual property (IP) considerations:
 - ✅ **Full thesis documentation** is publicly available
@@ -274,7 +252,7 @@ The Python tool uses **publicly available Infineon datasheet parameters** to dem
 
 ## 📄 Accessing the Thesis
 
-📖 **Full Thesis PDF:** [Totaro_Matteo_MastersThesis.pdf](Totaro_Matteo_MastersThesis.pdf)
+📖 **Full Thesis PDF:** [Totaro_Matteo_MastersThesis.pdf]([text](https://github.com/matteototaro/Fatigue-Analysis-SiC-Power-Module/blob/main/Totaro_Matteo_MastersThesis.pdf))
 
 The thesis includes:
 - Comprehensive literature review on SiC power modules
@@ -283,39 +261,6 @@ The thesis includes:
 - Results validation and sensitivity analysis
 - Future work and recommendations
 
----
-
-## 🎓 Academic Context
-
-**Degree:** Master of Science in Electrical Engineering  
-**University:** ALMA MATER STUDIORUM - UNIVERSITÀ DI BOLOGNA  
-**Department:** Electrical, Electronic, and Information Engineering  
-**Industry Partner:** Ferrari S.p.A. - Power Electronics Testing Department  
-**Thesis Type:** Experimental + Modeling  
-**Year:** 2022
-
----
-
-## 🛠️ Repository Structure
-
-```
-sic-thermal-lifetime/
-├── README.md                          # This file
-├── thermal_lifetime_prediction.py     # Main Python tool
-├── thermal_lifetime_analysis.ipynb    # Jupyter notebook version
-├── test_thermal_lifetime.py          # Unit tests
-├── Totaro_Matteo_MastersThesis.pdf   # Full thesis document
-├── requirements.txt                   # Python dependencies
-├── setup.py                          # Package installation
-├── LICENSE                           # MIT License
-├── profiles/                         # Pre-generated mission profiles
-│   ├── urban_profile.csv
-│   ├── highway_profile.csv
-│   └── performance_profile.csv
-└── thermal_lifetime_all_scenarios_comparison.png  # Example output
-```
-
----
 
 ## 📝 Citation
 
@@ -331,7 +276,6 @@ If you use this work in your research, please cite:
   note    = {In collaboration with Ferrari S.p.A.}
 }
 ```
-
 ---
 
 ## 📖 References
@@ -353,22 +297,8 @@ Email: tmatteos@gmail.com
 Website: [mtotaro.com](https://mtotaro.com)  
 LinkedIn: [linkedin.com/in/m-totaro](https://linkedin.com/in/m-totaro)
 
-For technical questions about the methodology or thesis content, feel free to reach out!
-
 ---
 
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-### Disclaimer
-
-This tool is for **educational and research purposes**. For production applications:
-- Use device-specific characterization data
-- Validate against physical testing
-- Consult with reliability engineers
-- Follow your organization's qualification procedures
-
-**The author assumes no liability for design decisions based on this tool.**
-
----
