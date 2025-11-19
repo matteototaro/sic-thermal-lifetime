@@ -15,7 +15,7 @@ The work successfully combines:
 - 🔬 **Experimental characterization** methods
 - 📊 **Industry-standard compliance** (ECPE AQG 324)
 
-![Thermal Lifetime Analysis](example_output.png)
+![Thermal Lifetime Analysis](docs/example_output.png)
 
 ---
 
@@ -143,7 +143,7 @@ The tool generates:
 ```
 
 #### 2. Comprehensive Visualization
-A publication-quality comparison plot (`example_output.png`) showing:
+A publication-quality comparison plot (`docs/example_output.png`) showing:
 - **Row 1:** Motor Speed profiles (all 3 scenarios side-by-side)
 - **Row 2:** Motor Torque profiles (all 3 scenarios)
 - **Row 3:** Junction Temperature evolution (all 3 scenarios)
